@@ -35,6 +35,7 @@ interface User {
   role: string;
   walletId: string;
   apiKey: string;
+  identificationId: string;
 }
 
 const UserDetails = () => {
@@ -216,6 +217,13 @@ const UserDetails = () => {
                   <Skeleton height="20px" width="100px" />
                   <Skeleton height="20px" width="250px" />
                 </HStack>
+                <Skeleton height="1px" />
+
+                {/* Identification ID */}
+                <HStack justify="space-between">
+                  <Skeleton height="20px" width="120px" />
+                  <Skeleton height="20px" width="250px" />
+                </HStack>
               </VStack>
             </VStack>
           ) : user ? (
@@ -253,6 +261,12 @@ const UserDetails = () => {
               <HStack justify="space-between">
                 <Text fontWeight="bold">API Key:</Text>
                 <Text>{user.apiKey}</Text>
+              </HStack>
+              <Divider />
+
+              <HStack justify="space-between">
+                <Text fontWeight="bold">Identification ID:</Text>
+                <Text>{user.identificationId}</Text>
               </HStack>
             </VStack>
           ) : (
