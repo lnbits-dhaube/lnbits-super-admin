@@ -85,7 +85,8 @@ const AddUser = () => {
           return "Phone number must be less than 30 characters";
         break;
       case "pin":
-        if (value.length !== 4) return "PIN must be exactly 4 characters";
+        if (value && value.length !== 4)
+          return "PIN must be exactly 4 characters";
         break;
       case "password":
         if (value.length < 5) return "Password must be at least 5 characters";
@@ -159,10 +160,17 @@ const AddUser = () => {
 
     setIsLoading(true);
     try {
-      await api.post("/users", {
+      const payload: Partial<typeof formData> & { roleId: number } = {
         ...formData,
         roleId: adminRoleId,
-      });
+      };
+
+      // Remove pin from payload if it's empty
+      if (!payload.pin) {
+        delete payload.pin;
+      }
+
+      await api.post("/users", payload);
 
       toast({
         title: "Success",
@@ -256,14 +264,14 @@ const AddUser = () => {
               )}
             </FormControl>
 
-            <FormControl isRequired isInvalid={!!errors.pin}>
-              <FormLabel>PIN</FormLabel>
+            <FormControl isInvalid={!!errors.pin}>
+              <FormLabel>PIN (Optional)</FormLabel>
               <Input
                 name="pin"
                 maxLength={4}
                 value={formData.pin}
                 onChange={handleChange}
-                placeholder="Enter PIN"
+                placeholder="Enter PIN (optional)"
               />
               {errors.pin && (
                 <Text color="red.500" fontSize="sm" mt={1}>

@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
-  const [phone, setPhone] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
@@ -27,7 +27,7 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      await login(phone, password);
+      await login(username, password);
       navigate("/dashboard");
     } catch (error) {
       toast({
@@ -59,11 +59,11 @@ const Login = () => {
             <form onSubmit={handleSubmit} style={{ width: "100%" }}>
               <VStack spacing={4}>
                 <FormControl isRequired>
-                  <FormLabel>Phone Number</FormLabel>
+                  <FormLabel>Username</FormLabel>
                   <Input
                     type="text"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
                     placeholder="Enter your username"
                   />
                 </FormControl>

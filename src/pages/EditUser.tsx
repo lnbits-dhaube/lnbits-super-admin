@@ -20,26 +20,30 @@ interface User {
   username: string;
   email: string;
   phone: string;
-  walletId: string;
-  apiKey: string;
+  pin?: string;
+}
+
+interface FormData {
+  username: string;
+  email: string;
+  phone: string;
+  pin: string;
 }
 
 interface FormErrors {
   username?: string;
   email?: string;
   phone?: string;
-  walletId?: string;
-  apiKey?: string;
+  pin?: string;
 }
 
 const EditUser = () => {
   const { id } = useParams<{ id: string }>();
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     username: "",
     email: "",
     phone: "",
-    walletId: "",
-    apiKey: "",
+    pin: "",
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
@@ -56,8 +60,7 @@ const EditUser = () => {
           username: user.username,
           email: user.email,
           phone: user.phone,
-          walletId: user.walletId,
-          apiKey: user.apiKey,
+          pin: user.pin || "",
         });
       } catch (error) {
         toast({
@@ -95,15 +98,9 @@ const EditUser = () => {
         if (value.length > 30)
           return "Phone number must be less than 30 characters";
         break;
-      case "walletId":
-        if (value.length < 10)
-          return "Wallet ID must be at least 10 characters";
-        if (value.length > 50)
-          return "Wallet ID must be less than 50 characters";
-        break;
-      case "apiKey":
-        if (value.length < 10) return "API Key must be at least 10 characters";
-        if (value.length > 50) return "API Key must be less than 50 characters";
+      case "pin":
+        if (value && value.length !== 4)
+          return "PIN must be exactly 4 characters";
         break;
     }
     return "";
@@ -151,7 +148,13 @@ const EditUser = () => {
 
     setIsSubmitting(true);
     try {
-      await api.put(`/users/${id}`, formData);
+      const payload: Partial<FormData> = { ...formData };
+      // Only include pin in payload if it's not empty
+      if (!payload.pin) {
+        delete payload.pin;
+      }
+
+      await api.put(`/users/${id}`, payload);
 
       toast({
         title: "Success",
@@ -279,34 +282,20 @@ const EditUser = () => {
               )}
             </FormControl>
 
-            <FormControl isRequired isInvalid={!!errors.walletId}>
-              <FormLabel>Wallet ID</FormLabel>
+            <FormControl isInvalid={!!errors.pin}>
+              <FormLabel>PIN (Optional)</FormLabel>
               <Input
-                name="walletId"
-                value={formData.walletId}
+                name="pin"
+                type="password"
+                maxLength={4}
+                value={formData.pin}
                 onChange={handleChange}
-                placeholder="Enter wallet ID"
+                placeholder="Enter PIN (optional)"
                 isDisabled={isLoading}
               />
-              {errors.walletId && (
+              {errors.pin && (
                 <Text color="red.500" fontSize="sm" mt={1}>
-                  {errors.walletId}
-                </Text>
-              )}
-            </FormControl>
-
-            <FormControl isRequired isInvalid={!!errors.apiKey}>
-              <FormLabel>API Key</FormLabel>
-              <Input
-                name="apiKey"
-                value={formData.apiKey}
-                onChange={handleChange}
-                placeholder="Enter API Key"
-                isDisabled={isLoading}
-              />
-              {errors.apiKey && (
-                <Text color="red.500" fontSize="sm" mt={1}>
-                  {errors.apiKey}
+                  {errors.pin}
                 </Text>
               )}
             </FormControl>

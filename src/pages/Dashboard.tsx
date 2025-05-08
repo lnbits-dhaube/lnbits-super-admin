@@ -199,28 +199,6 @@ const Dashboard = () => {
                           </Text>
                           <Text>{user.phone}</Text>
                         </HStack>
-
-                        <HStack>
-                          <Text
-                            whiteSpace="nowrap"
-                            fontWeight="medium"
-                            color="gray.500"
-                          >
-                            Wallet ID:
-                          </Text>
-                          <Text noOfLines={1}>{user.walletId || "N/A"}</Text>
-                        </HStack>
-
-                        <HStack>
-                          <Text
-                            whiteSpace="nowrap"
-                            fontWeight="medium"
-                            color="gray.500"
-                          >
-                            API Key:
-                          </Text>
-                          <Text noOfLines={1}>{user.apiKey || "N/A"}</Text>
-                        </HStack>
                       </VStack>
 
                       <Button

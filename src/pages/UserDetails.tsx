@@ -253,18 +253,6 @@ const UserDetails = () => {
               <Divider />
 
               <HStack justify="space-between">
-                <Text fontWeight="bold">Wallet ID:</Text>
-                <Text>{user.walletId}</Text>
-              </HStack>
-              <Divider />
-
-              <HStack justify="space-between">
-                <Text fontWeight="bold">API Key:</Text>
-                <Text>{user.apiKey}</Text>
-              </HStack>
-              <Divider />
-
-              <HStack justify="space-between">
                 <Text fontWeight="bold">Identification ID:</Text>
                 <Text>{user.identificationId}</Text>
               </HStack>

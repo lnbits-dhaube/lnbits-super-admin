@@ -13,7 +13,7 @@ const PUBLIC_ROUTES = ["/login"];
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  login: (phone: string, password: string) => Promise<void>;
+  login: (username: string, password: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -90,9 +90,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const login = async (phone: string, password: string) => {
-    if (phone && password) {
-      const response = await api.post("/admin-login", { phone, password });
+  const login = async (username: string, password: string) => {
+    if (username && password) {
+      const response = await api.post("/admin-login", { username, password });
       localStorage.setItem("access_token", response.data.access_token);
       localStorage.setItem("refresh_token", response.data.refresh_token);
       if (response.status === 200) {
